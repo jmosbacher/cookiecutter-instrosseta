@@ -2,18 +2,18 @@ import grpc
 from enum import Enum
 import pint
 import protobuf_to_dict
-from instrosetta.interfaces.{{cookiecutter.package_name}} import {{cookiecutter.interface_name}}_pb2 as pb2
-from instrosetta.interfaces.{{cookiecutter.package_name}} import {{cookiecutter.interface_name}}_pb2_grpc as pb2_grpc
-from instrosetta.servers.{{cookiecutter.manufacturer_name}}.{{cookiecutter.device_name}}.{{cookiecutter.device_name}}_device import {{cookiecutter.device_name.split("_")|map("title")|join("")}}Device
+import .{{cookiecutter.interface_name}}_pb2 as pb2
+import .{{cookiecutter.interface_name}}_pb2_grpc as pb2_grpc
+from .{{cookiecutter.device_name}}_device import {{cookiecutter.DeviceName}}Device
 
 ureg = pint.UnitRegistry()
 Q_ = ureg.Quantity
 
 
-class {{cookiecutter.device_name.split("_")|map("title")|join("")}}Servicer(pb2_grpc.{{cookiecutter.interface_name|title}}Servicer):
+class {{cookiecutter.DeviceName}}Servicer(pb2_grpc.{{cookiecutter.InterfaceName}}Servicer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.device = {{cookiecutter.device_name.split("_")|map("title")|join("")}}Device()
+        self.device = {{cookiecutter.DeviceName}}Device()
     {% for name in cookiecutter.property_names.split(",") %}
     {%set CamelName = name.split("_")|map("title")|join("") %}
     def {{CamelName}}(self, request, context):

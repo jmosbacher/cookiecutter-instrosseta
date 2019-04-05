@@ -2,16 +2,16 @@ import grpc
 from enum import Enum
 import pint
 import protobuf_to_dict
-from {{cookiecutter.project_slug}}.utils.units import accept_text
-from {{cookiecutter.project_slug}}.interfaces.{{cookiecutter.package_name}} import {{cookiecutter.interface_name}}_pb2 as pb2
-from {{cookiecutter.project_slug}}.interfaces.{{cookiecutter.package_name}} import {{cookiecutter.interface_name}}_pb2_grpc as pb2_grpc
-from {{cookiecutter.project_slug}}.client import RpcClient
+from .utils.units import accept_text
+import .{{cookiecutter.interface_name}}_pb2 as pb2
+import .{{cookiecutter.interface_name}}_pb2_grpc as pb2_grpc
+from .client import RpcClient
 
 ureg = pint.UnitRegistry()
 Q_ = ureg.Quantity
 
 
-class {{cookiecutter.interface_name|title}}(RpcClient):
+class {{cookiecutter.InterfaceName}}(RpcClient):
     {% for name in cookiecutter.method_names.split(",") -%}
     {%- set CamelName = name.split("_")|map("title")|join("") -%}
     def {{name}}(self, **kwargs):
