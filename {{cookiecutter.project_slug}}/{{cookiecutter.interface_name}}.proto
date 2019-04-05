@@ -1,0 +1,102 @@
+syntax = "{{cookiecutter.syntax_version}}";
+
+package {{cookiecutter.package_name}}.{{cookiecutter.interface_name}};
+
+service {{cookiecutter.interface_name.split("_")|map("title")|join("")}} {
+    {% for pname in cookiecutter.method_names.split(",") -%}
+    {%- set CamelName = pname.split("_")|map("title")|join("") -%}
+    rpc {{CamelName}}({{CamelName}}Request) returns ({{CamelName}}Response) {}
+    {%  endfor %}
+    {% for pname in cookiecutter.property_names.split(",") -%}
+    {%- set CamelName = pname.split("_")|map("title")|join("") -%}
+    {%- if pname in cookiecutter.option_names -%}
+    rpc Get{{CamelName}}Options(Get{{CamelName}}OptionsRequest) returns (Get{{CamelName}}OptionsResponse) {} 
+    {% endif %}
+    {%- if pname in cookiecutter.range_names -%}
+    rpc Get{{CamelName}}Range(Get{{CamelName}}RangeRequest) returns (Get{{CamelName}}RangeResponse) {} 
+    {% endif %}
+    {%- if pname in cookiecutter.stream_names -%}
+    rpc Get{{CamelName}}(Get{{CamelName}}Request) returns (stream Get{{CamelName}}Response) {}
+    rpc Set{{CamelName}}(stream Set{{CamelName}}Request) returns (Set{{CamelName}}Response) {}
+    {%- elif pname in cookiecutter.bstream_names -%}
+    rpc {{CamelName}}(stream {{CamelName}}Request) returns (stream {{CamelName}}Response) {}
+    {%- else -%}
+    rpc Get{{CamelName}}(Get{{CamelName}}Request) returns (Get{{CamelName}}Response) {}
+    rpc Set{{CamelName}}(Set{{CamelName}}Request) returns (Set{{CamelName}}Response) {}
+    {% endif %}
+    {% endfor %}
+}
+
+{% for pname in cookiecutter.method_names.split(",") -%}
+{%- set CamelName = pname.split("_")|map("title")|join("") -%}
+message {{CamelName}}Request {
+    string name = 1; 
+}
+
+message {{CamelName}}Response {
+    string name = 1; 
+}
+{%  endfor %}
+
+{%- for pname in cookiecutter.property_names.split(",") -%}
+{%- set CamelName = pname.split("_")|map("title")|join("") -%}
+{%- if pname in cookiecutter.option_names -%}
+message Get{{CamelName}}OptionsRequest {
+    string name = 1; 
+}
+
+message Get{{CamelName}}OptionsResponse {
+    string name = 1;
+    repeated double options = 2;
+}
+{% endif %}
+
+{%- if pname in cookiecutter.range_names -%}
+message Get{{CamelName}}RangeRequest {
+    string name = 1; 
+}
+
+message Get{{CamelName}}RangeResponse {
+    string name = 1; 
+    double minimum = 2;
+    double maximum = 3;
+    double resolution = 4;
+    string units = 5;
+}
+{% endif %}
+
+{%- if pname in cookiecutter.bstream_names -%}
+message {{CamelName}}Request {
+    string name = 1; 
+}
+
+message {{CamelName}}Response {
+    string name = 1; 
+}
+{% else %}
+message Get{{CamelName}}Request {
+    string name = 1;
+    string units = 2;
+}
+
+message Get{{CamelName}}Response {
+    string name = 1;
+    double value = 2;
+    string units = 3;
+}
+
+message Set{{CamelName}}Request {
+    string name = 1; 
+    double value = 2;
+    string units = 3;
+}
+
+message Set{{CamelName}}Response {
+    string name = 1; 
+    double value = 2;
+    string units = 3;
+}
+{% endif %}
+{% endfor %}
+
+

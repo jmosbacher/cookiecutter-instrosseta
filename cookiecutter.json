@@ -1,0 +1,17 @@
+{   "project_slug": "project_name",
+    "full_name": "My Name",
+    "email": "my.email@example.com",
+    "github_username": "myname",
+    "device_dependencies": "dependency1,dependency2",
+    "syntax_version": "proto3",
+    "interface_name": "device_interface",
+    "package_name": "catagory.subcatagory",
+    "manufacturer_name": "some_manufacturer",
+    "device_name": "device_name",
+    "method_names": "connect,disconnect",
+    "property_names": "device_property1,device_property2,device_property3,device_property4,device_property5",
+    "option_names": "device_property1",
+    "range_names": "device_property2",
+    "stream_names": "device_property3",
+    "bstream_names": "device_property4"
+  }
