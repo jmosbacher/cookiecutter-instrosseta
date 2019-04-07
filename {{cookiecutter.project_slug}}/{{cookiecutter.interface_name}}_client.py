@@ -24,7 +24,7 @@ class {{cookiecutter.InterfaceName}}(RpcClient):
     {% for name in cookiecutter.property_names.split(",") -%}
     {%- set CamelName = name.split("_")|map("title")|join("") -%}
     {%- if name in cookiecutter.stream_names -%}
-    def get_{{name}}(self):
+    def {{name}}_stream(self):
         req = pb2.Get{{CamelName}}Request()
         for resp in self.stream_rpc("Get{{CamelName}}", req):
             if resp is not None:
