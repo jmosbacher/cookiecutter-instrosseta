@@ -1,5 +1,7 @@
-{% for dependency in cookiecutter.device_dependencies.split(",") %}
+{%- for dependency in cookiecutter.device_dependencies.split(",") -%}
+{% if dependency != '' %}
 import {{dependency}}
+{% endif %}
 {% endfor %}
 
 class {{cookiecutter.DeviceName}}Device():

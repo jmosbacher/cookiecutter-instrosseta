@@ -1,6 +1,6 @@
 syntax = "{{cookiecutter.syntax_version}}";
 
-package {{cookiecutter.package_name}}.{{cookiecutter.interface_name}};
+package {{cookiecutter.package_name}}.{{cookiecutter.interface_name}}_v{{cookiecutter.interface_version}};
 
 service {{cookiecutter.interface_name.split("_")|map("title")|join("")}} {
     {% for pname in cookiecutter.method_names.split(",") -%}
