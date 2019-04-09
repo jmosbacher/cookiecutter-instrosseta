@@ -6,7 +6,7 @@
     "syntax_version": "proto3",
     "interface_name": "device_interface",
     "InterfaceName" : "{{cookiecutter.interface_name.split('_')|map('title')|join('')}}",
-    "interface_version" : "1",
+    "interface_version" : "0_1_0",
     "package_name": "catagory.subcatagory",
     "manufacturer_name": "some_manufacturer",
     "ManufacturerName": "{{cookiecutter.manufacturer_name.split('_')|map('title')|join('')}}",

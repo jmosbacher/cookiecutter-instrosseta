@@ -11,12 +11,24 @@ Q_ = ureg.Quantity
 
 
 class {{cookiecutter.DeviceName}}Servicer(pb2_grpc.{{cookiecutter.InterfaceName}}Servicer):
+    __instrosetta_metadata__ = {
+        "package": "{{cookiecutter.package_name}}.{{cookiecutter.interface}}_v{{cookiecutter.interface_version}}",
+        
+    }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.device = {{cookiecutter.DeviceName}}Device()
+
+    {% for name in cookiecutter.method_names.split(",") -%}
+    {%- set CamelName = name.split("_")|map("title")|join("") -%}
+    def {{CamelName}}(self, request, context):
+        rkwargs =  self.device.{{name}}(**request)
+        return pb2.{{CamelName}}Response(**rkwargs)
+
+    {% endfor %}
     {% for name in cookiecutter.property_names.split(",") %}
     {%set CamelName = name.split("_")|map("title")|join("") %}
-    def {{CamelName}}(self, request, context):
+    def Get{{CamelName}}(self, request, context):
         try:
             self.device.{{name}}(**request)
         except:
@@ -24,14 +36,6 @@ class {{cookiecutter.DeviceName}}Servicer(pb2_grpc.{{cookiecutter.InterfaceName}
             context.set_details('Failed to connect.')
         return pb2.{{CamelName}}Response()
     {% endfor %}
-    def Disconnect(self, request, context):
-        try:
-            self.device.disconnect()
-        except:
-            context.set_code(grpc.StatusCode.INTERNAL)
-            context.set_details('Failed to disconnect.')
-        return pb2.DisconnectResponse()
-
 
     {% for name in cookiecutter.property_names.split(",") %}
     {%set CamelName = name.split("_")|map("title")|join("") %}

@@ -3,9 +3,9 @@ from enum import Enum
 import pint
 import protobuf_to_dict
 from .utils.units import accept_text
-import .{{cookiecutter.interface_name}}_pb2 as pb2
-import .{{cookiecutter.interface_name}}_pb2_grpc as pb2_grpc
-from .client import RpcClient
+import {{cookiecutter.package_name}}.{{cookiecutter.interface_name}}_pb2 as pb2
+import {{cookiecutter.package_name}}.{{cookiecutter.interface_name}}_pb2_grpc as pb2_grpc
+from instrosetta.client import RpcClient
 
 ureg = pint.UnitRegistry()
 Q_ = ureg.Quantity
@@ -30,7 +30,7 @@ class {{cookiecutter.InterfaceName}}(RpcClient):
             if resp is not None:
                 yield Q_(resp.value, resp.units)
             else:
-                yield [Q_(float('nan'))]
+                yield Q_(float('nan'))
 
     {%- elif name in cookiecutter.bstream_names -%}
     def {{name}}(self):
@@ -42,7 +42,7 @@ class {{cookiecutter.InterfaceName}}(RpcClient):
             if resp is not None:
                 yield Q_(resp.value, resp.units)
             else:
-                yield [Q_(float('nan'))]
+                yield Q_(float('nan'))
 
     {%- else -%}
     @property
@@ -52,7 +52,7 @@ class {{cookiecutter.InterfaceName}}(RpcClient):
         if resp is not None:
             return Q_(resp.value, resp.units)
         else:
-            return [Q_(float('nan'))]
+            return Q_(float('nan'))
 
     {% endif%}
     {%- if name in cookiecutter.option_names -%}

@@ -105,4 +105,5 @@ ENV/
 .vscode/
 
 #outputs
-generated/
+generated_interfaces/
+generated_devices/

@@ -1,6 +1,6 @@
 syntax = "{{cookiecutter.syntax_version}}";
 
-package {{cookiecutter.package_name}}.{{cookiecutter.interface_name}}_v{{cookiecutter.interface_version}};
+package {{cookiecutter.package_name}}.{{cookiecutter.interface_name}}.v{{cookiecutter.interface_version}};
 
 service {{cookiecutter.interface_name.split("_")|map("title")|join("")}} {
     {% for pname in cookiecutter.method_names.split(",") -%}
@@ -26,6 +26,10 @@ service {{cookiecutter.interface_name.split("_")|map("title")|join("")}} {
     {% endif %}
     {% endfor %}
 }
+
+// The first property of all messages is called "name" and reserved for
+// a unique identifier of the request-response session.
+// How the uid is generated is implementation specific and should not be relied on for functionality.
 
 {% for pname in cookiecutter.method_names.split(",") -%}
 {%- set CamelName = pname.split("_")|map("title")|join("") -%}
@@ -60,7 +64,7 @@ message Get{{CamelName}}RangeResponse {
     string name = 1; 
     double minimum = 2;
     double maximum = 3;
-    double resolution = 4;
+    double step = 4;
     string units = 5;
 }
 {% endif %}
